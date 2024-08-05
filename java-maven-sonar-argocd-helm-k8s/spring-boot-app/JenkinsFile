@@ -52,15 +52,16 @@ pipeline {
         }
         steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                    git config user.email "spurthiami@gmail.com"
-                    git config user.name "Spurthiami"
-                    BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://$GITHUB_TOKEN@github.com/Spurthiami/Jenkins-Zero-To-Hero HEAD:main
-                '''
+               echo "GITHUB_TOKEN is set"
+               sh 'git config user.email "spurthiami@gmail.com"'
+               sh 'git config user.name "Spurthiami"'
+               sh 'sed -i s/replaceImageTag/25/g java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml'
+               sh 'git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml'
+               sh 'git commit -m "Update deployment image to version ${BUILD_NUMBER}"'
+               sh "echo https://$GITHUB_TOKEN@github.com/Spurthiami/Jenkins-Zero-To-Hero"
+               sh "git push https://$GITHUB_TOKEN@github.com/Spurthiami/Jenkins-Zero-To-Hero HEAD:main"
+          }
+
             }
         }
     }
